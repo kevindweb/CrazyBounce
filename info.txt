@@ -1,0 +1,11 @@
+My version of doodle jump
+
+Simplest form of the game
+    - ball is always bouncing when it hits the top of a ledge
+    - move while jumping - right/left arrows
+    - 1 character - use with circle (costs nothing)
+    - platforms to stand on - with random location on screen
+        - make sure they do not overlap, remove if they do
+    - view moves up, but never down
+    - gravity mechanic
+    - if player falls below player view, end game with height score, restart
