@@ -7,6 +7,9 @@ public class CameraJumpFollow : MonoBehaviour {
 	public Transform player;
 
 	void Update () {
-		transform.position = new Vector3(0, player.position.y + offset, -10);
+		if(player){
+			// check because walls could have destroyed player
+			transform.position = new Vector3(0, player.position.y + offset, -10);
+		}
 	}
 }
