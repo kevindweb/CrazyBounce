@@ -22,7 +22,6 @@ public class Restart : MonoBehaviour {
 	}
 
 	public void RestartGame(){
-		Debug.Log("Clicked!");
 		SceneManager.LoadScene("JumpScene1");
 	}
 }

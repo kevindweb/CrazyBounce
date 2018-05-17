@@ -10,7 +10,7 @@ public class CharacterMovement : MonoBehaviour {
 	public float modifier = 1.1f;
 	private int increaseCount = 0;
 	public int bouncy = 11;
-	public int boost = 2;
+	public float boost = 1.5f;
 	private bool boosted = false;
 	private bool bouncing = false;
 	private float savedTime;
@@ -20,11 +20,13 @@ public class CharacterMovement : MonoBehaviour {
 	void Awake(){
 		rg2d = gameObject.GetComponent<Rigidbody2D>();
 		savedTime = Time.time;
+		// DataLoader access = ScriptableObject.CreateInstance("DataLoader") as DataLoader;
+		// access.Save("Here is stuff to save!");
+		// Debug.Log("data loaded: " + access.Load(string.Empty, "saveFile.dat"));
 	}
 
 	void Update(){
 		if(transform.position.y < -10){
-			Debug.Log("We lost!");
 			Destroy(spawner);
 			SceneManager.LoadScene("GameOver");
 			// load game over scene
@@ -45,7 +47,6 @@ public class CharacterMovement : MonoBehaviour {
 			rg2d.velocity = Vector2.zero;
 			// remove gravity effects
 			if(boosted){
-				Debug.Log("Boost up!");
 				boosted = false;
 				rg2d.AddForce(new Vector2(0, bouncy * boost), ForceMode2D.Impulse);
 				// boost up more than usual
@@ -63,20 +64,18 @@ public class CharacterMovement : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D collidedLedge){
-		GameObject ledge = collidedLedge.gameObject;
-		string tag = ledge.tag;
-		if(tag == "Boost"){
-			// check for boost
-			boosted = true;
-			Destroy(collidedLedge);
-			return;
-		}
-		Transform colliderTransform = ledge.transform;
-		float topOfLedge = colliderTransform.position.y + (colliderTransform.localScale.y / 2);
+	void OnTriggerEnter2D(Collider2D collidedEdge){
+		GameObject obj = collidedEdge.gameObject;
+		string tag = obj.tag;
+		Transform colliderTransform = obj.transform;
+		float topOfObject = colliderTransform.position.y + (colliderTransform.localScale.y / 2);
 		float bottomOfPlayer = transform.position.y - (transform.localScale.y / 2);
 		// get the measurements for collision detection
-		if(tag == "Ledge" && ((bottomOfPlayer + .3f) >= topOfLedge)){
+		if(tag == "Boost" && (bottomOfPlayer + .3f) >= topOfObject){
+			// check for boost
+			boosted = true;
+			Destroy(collidedEdge);
+		} else if(tag == "Ledge" && ((bottomOfPlayer + .3f) >= topOfObject)){
 			// trigger tells us when ball has landed on top of ledge
 			bouncing = true;
 			savedTime = Time.time;

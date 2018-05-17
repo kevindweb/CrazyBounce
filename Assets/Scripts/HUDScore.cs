@@ -17,10 +17,8 @@ public class HUDScore : MonoBehaviour {
 
 	void OnDestroy(){
 		if(!PlayerPrefs.HasKey("highScore")){
-			Debug.Log("setting high score");
 			PlayerPrefs.SetInt("highScore", (int) score);
 		} else if(score > PlayerPrefs.GetInt("highScore")){
-			Debug.Log("setting high score");
 			PlayerPrefs.SetInt("highScore", (int) score);
 		}
 		PlayerPrefs.SetInt("playerHeight", (int) score);
